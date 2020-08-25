@@ -2,12 +2,17 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const favicon = require('serve-favicon');
 const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 
-// Manual headers to be used in the project
+// Manual Plugins
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const User = require('./models/user'); //For to use in session with the model of user login
+const session = require('express-session');
+const mongoose = require('mongoose');
+const methodOverride = require('method-override'); 
 
 // Routes for the website 
 const indexRouter = require('./routes/index'); 
@@ -15,6 +20,16 @@ const usersRouter = require('./routes/users');
 const statusRouter = require('./routes/status');
 
 const app = express();
+
+// Connect to database
+mongoose.set('useUnifiedTopology', true);
+mongoose.connect('mongodb://localhost:27017/itech', { useNewUrlParser: true });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('We\'re connected!');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +40,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
+// Configure passport and sessions
+app.use(session({
+	secret: "hand ten dude!",
+	resave: false,
+	saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Mount Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/status', statusRouter);
