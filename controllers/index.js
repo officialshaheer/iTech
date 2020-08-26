@@ -19,12 +19,11 @@ module.exports = {
  	successRedirect: '/',
  	failureRedirect: '/user/login'	
  	})(req, res, next);
- 	console.log('User Logged In!')
  },
 
  getLogout(req, res, next) {
    req.logout();
-   res.redirect('/');
+   res.redirect('/user/login');
  }
  
 }
