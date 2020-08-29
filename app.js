@@ -1,4 +1,4 @@
-// Generated headers
+// Default Express Generate Headers
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -9,15 +9,15 @@ const cookieParser = require('cookie-parser');
 // Manual Plugins
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const User = require('./models/user'); //For to use in session with the model of user login
+const User = require('./models/user');
 const session = require('express-session');
 const mongoose = require('mongoose');
-const methodOverride = require('method-override'); 
+const methodOverride = require('method-override');
 
-// Routes for the website 
-const indexRouter = require('./routes/index'); 
-const usersRouter = require('./routes/users');
-const statusRouter = require('./routes/status');
+// require routes
+const indexRouter = require('./routes/index');
+const displaysRouter = require('./routes/displays');
+
 
 const app = express();
 
@@ -58,8 +58,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Mount Routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/status', statusRouter);
+app.use('/displays', displaysRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

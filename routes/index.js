@@ -28,14 +28,5 @@ router.post('/user/login', postLogin);
 // // /* GET /logout */
 router.get('/logout', getLogout);
 
-// /* GET /profile. - Display Profile  */
-// router.get('/profile', (req, res, next) => {
-//   res.send('GET /profile');
-// });
-
-// /* PUT /profile/:user_id - Updating profile */
-// router.put('/profile/:user_id', (req, res, next) => {
-//   res.send('PUT /profile/:user_id');
-// });
 
 module.exports = router;

@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Error - iTech Mobile Service Point' });
+  res.render('index', { title: 'Status - iTech Mobile Service Point' });
 });
 
 module.exports = router;
